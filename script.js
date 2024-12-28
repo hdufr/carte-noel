@@ -1,69 +1,106 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Fonction pour créer des flocons de neige
+    function createSnowflakes() {
+        const snowContainer = document.createElement('div');
+        snowContainer.classList.add('snow-container');
+        document.body.appendChild(snowContainer);
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // Position horizontale aléatoire
+            snowflake.style.left = `${Math.random() * 100}%`;
+            
+            // Taille aléatoire
+            const size = Math.random() * 5 + 2;
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            
+            // Opacité aléatoire
+            snowflake.style.opacity = Math.random();
+            
+            // Vitesse de chute aléatoire
+            snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`;
+            
+            snowContainer.appendChild(snowflake);
+
+            // Supprimer le flocon après son animation
+            snowflake.addEventListener('animationend', () => {
+                snowflake.remove();
+            });
+        }
+
+        // Créer des flocons régulièrement
+        function snowfall() {
+            createSnowflake();
+            setTimeout(snowfall, Math.random() * 200 + 50);
+        }
+
+        snowfall();
+    }
+
+    // Lancer la neige
+    createSnowflakes();
+
     // Gestion de la musique
     const backgroundMusic = document.getElementById('background-music');
     const playPauseBtn = document.getElementById('play-pause-btn');
-
-    // Configurer le volume
-    backgroundMusic.volume = 1.0;
-
-    // Variable pour suivre l'état de lecture
+    const card = document.querySelector('.card');
     let isPlaying = false;
 
-    // Démarrer la musique automatiquement
-    backgroundMusic.play()
-        .then(() => {
-            isPlaying = true;
-            playPauseBtn.textContent = '🔇 Pause';
-        })
-        .catch(error => {
-            isPlaying = false;
-        });
-
-    playPauseBtn.addEventListener('click', () => {
-        if (!isPlaying) {
-            // Tenter de lire la musique
-            const playPromise = backgroundMusic.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    isPlaying = true;
-                    playPauseBtn.textContent = '🔇 Pause';
-                }).catch(error => {
-                    isPlaying = false;
-                });
-            }
-        } else {
-            // Mettre en pause
+    function toggleMusic() {
+        if (isPlaying) {
             backgroundMusic.pause();
+            playPauseBtn.textContent = '🎵 Lecture';
             isPlaying = false;
-            playPauseBtn.textContent = '🎵 Musique';
+        } else {
+            backgroundMusic.play()
+                .then(() => {
+                    playPauseBtn.textContent = '🎵 Pause';
+                    isPlaying = true;
+                })
+                .catch(error => {
+                    console.error("Erreur de lecture audio:", error);
+                });
         }
-    });
+    }
 
-    // Gérer les événements audio supplémentaires
+    playPauseBtn.addEventListener('click', toggleMusic);
+
+    let startX = null;
+    let startY = null;
+
+    function handleTouchStart(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }
+
+    function handleTouchEnd(e) {
+        if (!startX) return;
+
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        handleSwipe(startX, startY, endX, endY);
+        startX = null;
+    }
+
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchend', handleTouchEnd);
+
+    // Gestion des événements audio supplémentaires
     backgroundMusic.addEventListener('ended', () => {
+        playPauseBtn.textContent = '🎵 Lecture';
         isPlaying = false;
-        playPauseBtn.textContent = '🎵 Musique';
     });
 
-    // Gestion des boutons pour retourner la carte
-    const card = document.querySelector('.card');
-    const frontButton = document.querySelector('.flip-button');
-    const backButton = document.querySelector('.flip-button-back');
+    // Supprimer les contrôles de musique précédents
+    const musicControlsElement = document.querySelector('.music-controls');
+    if (musicControlsElement) {
+        musicControlsElement.remove();
+    }
 
-    frontButton.addEventListener('click', () => {
-        document.querySelector('.front').style.transform = 'rotateY(-180deg)';
-        document.querySelector('.inside').style.transform = 'rotateY(0deg)';
-        document.querySelector('.back').style.transform = 'rotateY(-180deg)';
-    });
-
-    backButton.addEventListener('click', () => {
-        document.querySelector('.front').style.transform = 'rotateY(0deg)';
-        document.querySelector('.inside').style.transform = 'rotateY(180deg)';
-        document.querySelector('.back').style.transform = 'rotateY(-180deg)';
-    });
-
-    // Gestion de l'ouverture de l'URL du produit
+    // Gestion des boutons pour l'ouverture de l'URL du produit
     const giftImage = document.querySelector('.gift-image');
     if (giftImage) {
         giftImage.addEventListener('click', () => {
@@ -75,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Animation de neige
-    function createSnowflakes() {
+    function createSnowflakesOld() {
         const snowflakesContainer = document.createElement('div');
         snowflakesContainer.className = 'snowflakes';
         document.body.appendChild(snowflakesContainer);
@@ -92,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    createSnowflakes();
+    // createSnowflakesOld();
 
     // Animation des éléments de la scène de Noël
     function animateChristmasScene() {
@@ -118,4 +155,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Animation au chargement de la page
     setTimeout(animateChristmasScene, 1000);
+
+    // Vérifier si l'appareil supporte les événements tactiles
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    // Fonction pour basculer la carte et gérer la musique
+    function toggleCardAndMusic() {
+        card.classList.toggle('flipped');
+        
+        // Jouer la musique si ce n'est pas déjà le cas
+        if (backgroundMusic.paused) {
+            backgroundMusic.play()
+                .then(() => {
+                    playPauseBtn.textContent = '🎵 Pause';
+                    isPlaying = true;
+                })
+                .catch(error => {
+                    console.error("Erreur de lecture audio:", error);
+                });
+        }
+    }
+
+    // Ajouter des gestionnaires de clic pour toutes les icônes de swipe
+    const swipeIcons = document.querySelectorAll('.swipe-icon');
+    swipeIcons.forEach(swipeIcon => {
+        swipeIcon.addEventListener('click', (e) => {
+            e.stopPropagation(); // Empêcher la propagation de l'événement
+            toggleCardAndMusic();
+        });
+    });
+
+    // Fonction de gestion du swipe
+    function handleSwipe(startX, startY, endX, endY) {
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+        const minSwipeDistance = 50; // Distance minimale pour déclencher le swipe
+
+        // Vérifier si le swipe est horizontal et suffisamment long
+        if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaX) > Math.abs(deltaY)) {
+            // Swipe vers la gauche ou la droite
+            card.classList.toggle('flipped');
+            
+            // Jouer la musique si ce n'est pas déjà le cas
+            const audio = document.getElementById('background-music');
+            if (audio.paused) {
+                audio.play();
+            }
+        }
+    }
 });

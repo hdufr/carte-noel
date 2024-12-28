@@ -21,35 +21,82 @@ body {
 }
 
 .card {
-    width: 85%;
-    max-width: 900px;
-    height: 85%;
-    max-height: 550px;
     position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 90vh;
+    margin: 20px auto;
     perspective: 2000px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transform-style: preserve-3d;
 }
 
 .card-face {
     position: absolute;
     width: 100%;
     height: 100%;
+    transition: transform 0.6s;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background-color: var(--snow-white);
     backface-visibility: hidden;
-    transition: transform 1s;
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .front {
-    background: var(--snow-white);
+    transform: rotateY(0deg);
+}
+
+.inside {
+    transform: rotateY(180deg);
+}
+
+.card.flipped .front {
+    transform: rotateY(180deg);
+}
+
+.card.flipped .inside {
+    transform: rotateY(0deg);
+}
+
+.front {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 30px;
     text-align: center;
+}
+
+.inside-content {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.inside-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.inside-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.inside {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 20px;
 }
 
 .christmas-scene {
@@ -59,6 +106,8 @@ body {
     border-radius: 10px;
     margin-bottom: 10px;
     overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .scene-image {
@@ -68,6 +117,8 @@ body {
     object-position: center;
     border-radius: 10px;
     transition: transform 0.5s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .scene-image:hover {
@@ -94,42 +145,12 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.inside {
-    background: var(--snow-white);
-    transform: rotateY(180deg);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.inside-content {
-    display: flex;
-    flex-grow: 1;
-    overflow: hidden;
-    max-height: 100%;
-    padding: 10px;
-}
-
-.inside-left, .inside-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 10px;
-    overflow: hidden;
-}
-
 .projector-image {
-    width: 50%; 
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 50%; /* Limite la hauteur de l'image */
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 20px;
+    border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 20px;
-    align-self: center;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .projector-image .gift-image {
@@ -154,29 +175,22 @@ h1 {
 .product-description {
     font-family: 'Dancing Script', cursive;
     font-size: 1.3em;
-    line-height: 1.6;
-    color: #333;
+    line-height: 1.2;
     margin-top: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 50%; /* Limite la hauteur du texte */
     word-wrap: break-word;
 }
 
 .letter {
     font-family: 'Dancing Script', cursive;
     font-size: 1.3em;
-    line-height: 1.8;
+    line-height: 1.2;
 }
 
-.dear {
-    font-size: 1.5em;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-}
 
 .message {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .signature {
@@ -187,7 +201,6 @@ h1 {
 
 .back {
     background: var(--snow-white);
-    transform: rotateY(-180deg);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -242,43 +255,154 @@ h1 {
 }
 
 .gift-image {
-    width: 75%; 
-    max-height: 300px;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
     border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    align-self: center; 
     display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-.gift-image:hover {
-    transform: scale(1.05);
+.product-description {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #333;
+}
+
+
+.dear {
+    font-family: 'Dancing Script', cursive;
+    color: var(--primary-color);
+}
+
+.message {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    text-align: right;
+    margin-top: 20px;
 }
 
 .music-controls {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    display: block;
+    width: 100%;
+    text-align: center;
 }
 
-#play-pause-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
+.music-controls button {
+    background-color: var(--secondary-color) !important;
+    color: var(--snow-white) !important;
+    border: 2px solid var(--gold) !important;
+    padding: 10px 15px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    font-family: 'Montserrat', sans-serif !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-block !important;
+    font-size: 16px !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.swipe-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #ffffff;
+    animation: pulse 2s infinite;
+    backface-visibility: hidden;
+}
+
+.swipe-icon {
+    font-size: 2em;
+    display: block;
+    margin-bottom: 10px;
+    animation: swipeAnimation 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes swipeAnimation {
+    0% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(-10px); }
+}
+
+.swipe-indicator {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
     cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    transition: background-color 0.3s ease;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    display: none;
 }
 
-#play-pause-btn:hover {
-    background-color: var(--secondary-color);
+@media (hover: hover) and (pointer: fine) {
+    .swipe-indicator {
+        display: block;
+    }
+}
+
+.swipe-icon {
+    font-size: 2em;
+    display: block;
+    animation: swipe-left-animation 1.5s infinite;
+}
+
+@keyframes swipe-left-animation {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-20px); }
+}
+
+.swipe-indicator:hover {
+    opacity: 1;
+}
+
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    top: -10px;
+    animation: fall linear infinite;
+    z-index: 9999;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+    }
 }
 
 /* Animations de neige */
@@ -333,7 +457,6 @@ h1 {
         width: 100%;
         text-align: center;
         padding: 5px;
-        overflow: hidden;
     }
 
     .projector-image {
@@ -349,10 +472,8 @@ h1 {
     }
 
     .product-description {
-        font-size: 1em;
-        line-height: 1.4;
-        max-height: 40%;
-        margin-top: 10px;
+        font-size: 1.5em;
+        margin-top: 5px;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -382,9 +503,9 @@ h1 {
     }
 
     .product-description {
-        font-size: 0.9em;
-        max-height: 35%;
+        font-size: 1.5em;
     }
+
 
     .projector-image {
         max-height: 55%;

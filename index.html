@@ -9,27 +9,35 @@
 </head>
 <body>
     <audio id="background-music" preload="auto" loop>
-        <source src="audio/black-box-christmas-jingle-belloriginal-11464.mp3" type="audio/mpeg">
+        <source src="audio\Christmas-Mood-chosic.com_.mp3" type="audio/mpeg">
         Votre navigateur ne supporte pas l'élément audio.
     </audio>
     <div class="music-controls">
         <button id="play-pause-btn">🎵 Musique</button>
     </div>
     <div class="card">
-        <div class="card-face front active">
+        <div class="card-face front">
             <div class="christmas-scene">
                 <img src="images/christmas-scene.jpeg" alt="Scène de Noël avec sapin illuminé et cheminée" class="scene-image">
             </div>
             <h1>Un Noël plein de lumières et de magie</h1>
-            <button class="flip-button">Ouvrir la carte</button>
+            <div class="swipe-hint">
+                <span class="swipe-icon">👆</span>
+                <p>Glissez pour ouvrir</p>
+            </div>
         </div>
         
         <div class="card-face inside">
+            <div class="swipe-indicator">
+                <span class="swipe-icon" title="Cliquez pour revenir">👈</span>
+            </div>
             <div class="inside-content">
                 <div class="inside-left">
                     <div class="projector-image">
-                    <img src="images/cadeauMarie.jpg" alt="Cadeau de Noël pour Marie" class="gift-image" data-product-url="https://www.frandroid.com/marques/xgimi/2410772_test-du-xgimi-mogo-3-pro-le-projecteur-dappoint-sous-google-tv">
-                </div>
+                        <a href="https://www.frandroid.com/marques/xgimi/2410772_test-du-xgimi-mogo-3-pro-le-projecteur-dappoint-sous-google-tv" target="_blank">
+                            <img src="images/cadeauMarie.jpg" alt="Cadeau de Noël pour Marie" class="gift-image">
+                        </a>
+                    </div>
                     <p class="product-description">
                         Avec ce cadeau, nous avons pensé à illuminer ton quotidien. 
                         Ce vidéoprojecteur Xgimi MoGo 3 Pro est conçu pour transformer 
@@ -39,36 +47,16 @@
                     </p>
                 </div>
                 
-                <div class="inside-right">
+
                     <div class="letter">
-                        <p class="dear">Chère Marie,</p>
-                        <p class="message">
-                            Pour ce Noël, nous avons choisi ce vidéoprojecteur pour toi. 
-                            Sa portabilité, son interface intuitive avec Google TV et sa 
-                            qualité sonore Harman/Kardon t'offriront des instants magiques, 
-                            qu'il s'agisse d'une soirée cocooning ou d'un moment partagé 
-                            avec tes proches.
-                        </p>
-                        <p class="message">
-                            Nous espérons que ce cadeau t'accompagnera dans de nombreux 
-                            beaux souvenirs.
-                        </p>
                         <p class="signature">
-                            Joyeux Noël,<br>
+                            Chère Marie,<br>
                             Avec tout notre amour,<br>
                             Laurence et Papa
                         </p>
                     </div>
-                </div>
+
             </div>
-            <button class="flip-button-back">Retourner la carte</button>
-        </div>
-        
-        <div class="card-face back">
-            <p class="back-text">
-                Conçu avec amour, offert avec joie.<br>
-                Que ce Noël soit rempli de rires, de douceur et de lumière.
-            </p>
         </div>
     </div>
     <script src="script.js"></script>
